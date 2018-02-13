@@ -162,6 +162,7 @@ function codeable_display_expert_completed($atts) {
 	return $codeable_expert_data->completed_tasks_count;
 
 }
+add_shortcode( 'expert_completed', 'codeable_display_expert_completed' );
 
 function codeable_display_expert_hire($atts) {
 

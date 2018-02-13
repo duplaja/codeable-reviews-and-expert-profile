@@ -76,7 +76,7 @@ function codeable_handle_review_transient($codeable_id,$number_of_reviews) {
 			}
 		}
 
-		// Save the API response so we don't have to call again for another hour.
+		// Save the API response so we don't have to call again for four hours.
 		set_transient( 'codeable_'.$codeable_id.'_review_'.$number_of_reviews, $codeable_review_data, $four_hours );
 
 		return $codeable_review_data;   

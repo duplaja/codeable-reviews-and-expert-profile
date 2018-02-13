@@ -2,6 +2,10 @@
 
 WordPress plugin for front end display of Codeable expert information
 
+Stores expert and review information from the API in transients to lower number of server calls
+* Expert Information (1 day)
+* Reviews (4 hours)
+
 ## Shortcodes (codeable_id att required):
 
 | Shortcodes       | Item to Insert       |

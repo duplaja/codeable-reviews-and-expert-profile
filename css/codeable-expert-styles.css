@@ -1,0 +1,103 @@
+ul.codeable_reviews {
+	list-style-type:none;
+}
+
+li.codeable_review img.reviewer_image {
+	border-radius:50%;
+	display:inline-block;
+	float:left;
+	margin-top:30px;
+	width:100px;
+	clear:left;
+}
+
+li.codeable_review div.review_info {
+
+	display: inline-block;
+	float:left;
+	margin-left:20px;
+	margin-top:30px;
+	width:70%;
+	clear:right;
+}
+
+li.codeable_review img.review_rating_star {
+	
+	width:20px;
+	height:auto;
+}
+
+li.codeable_review p.reviewer_name {
+	font-style:italic;
+	font-weight:700;
+}
+
+li.codeable_review p.review_rating {
+	font-weight:700;
+}
+
+li.codeable_review p.review_task_title {
+	font-weight:900;
+}
+
+a.codeable-hire-button.hire-button-black {
+	box-shadow: 0 3px 3px 0 rgba(0,0,0,.1);
+    font-weight: 700;
+	color: #fff;
+	padding: 1.25rem 2.5rem;
+	background-color: #343a40;
+    border-color: #343a40;
+    display: inline-block;
+	text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+	-webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+
+a.codeable-hire-button.hire-button-black:hover {
+	color: #fff;
+	background-color: #23272b;
+    border-color: #1d2124;
+	text-decoration: none;
+	
+}
+
+a.codeable-hire-button.hire-button-white {
+	
+	box-shadow: 0 3px 3px 0 rgba(0,0,0,.1);
+    font-weight: 700;
+	padding: 1.25rem 2.5rem;
+	color: #212529;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+	display: inline-block;
+	text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+	-webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+	border: 1px solid transparent;
+	font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	
+}
+
+a.codeable-hire-button.hire-button-white:hover {
+	color: #212529;
+    background-color: #e2e6ea;
+    border-color: #dae0e5;
+	text-decoration:none;
+}

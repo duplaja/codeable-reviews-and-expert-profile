@@ -9,7 +9,6 @@ Author: Dan Dulaney
 Author URI: https://dandulaney.com
 License: GPLv2
 License URI: 
-
 */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly

@@ -3,7 +3,7 @@
 Plugin Name: Codeable Reviews and Expert Profile
 Plugin URI: https://dandulaney.com
 Description: Gathers Codeable Reviews and Profile Information for a Codeable Expert
-Version: 0.9
+Version: 1.0
 Author: Dan Dulaney
 Author URI: https://dandulaney.com
 License: GPLv2
@@ -76,13 +76,28 @@ function codeable_handle_review_transient($codeable_id,$number_of_reviews) {
 			}
 		}
 
-		// Save the API response so we don't have to call again for four hours.
+
+		//Parse off any "overages" from grabbing in batches of 4
+		$number_on_last_page = $number_of_reviews % 4;
+		if ($number_on_last_page != 0) {
+
+			$number_to_remove = 4 - $number_on_last_page;
+
+			$codeable_review_data = array_pop_n($codeable_review_data,$number_to_remove);
+
+		}
+
+		// Save the API response so we don't have to call again for another hour.
 		set_transient( 'codeable_'.$codeable_id.'_review_'.$number_of_reviews, $codeable_review_data, $four_hours );
 
 		return $codeable_review_data;   
 	}
 }
 
+//Removes last n elements of array, utility for caching reviews.
+function array_pop_n(array $arr, $n) {
+    return array_splice($arr, 0, -$n);
+}
 
 function codeable_display_expert_image( $atts ){
 
@@ -219,6 +234,9 @@ function codeable_display_reviews($atts){
 			'number_to_show'=>4,
 			'show_title'=>'no',
 			'show_date'=>'no',
+			'min_score'=> '',
+			'max_score'=> '',
+			'sort'=> '',
 		), $atts, 'expert_completed' );
 
 	if (empty($atts['codeable_id'])) {
@@ -228,12 +246,17 @@ function codeable_display_reviews($atts){
 
 	$codeable_review_data = codeable_handle_review_transient($atts['codeable_id'],$atts['number_to_show']);
 
-	//var_dump($codeable_review_data);
+
+	if ($atts['sort'] == 'rand') {
+
+		shuffle($codeable_review_data);
+
+	}
+
+
 	$to_return = '<ul class="codeable_reviews">';
 	$review_number = 0;
 	foreach ($codeable_review_data as $review) {
-
-		$review_number++;
 
 		$task_title = $review->task_title;
 		$score = $review->score;
@@ -241,6 +264,17 @@ function codeable_display_reviews($atts){
 		$comment = $review->comment;
 		$name = $review->reviewer->full_name;
 		$image = $review->reviewer->avatar->medium_url;
+
+		if (!empty($atts['min_score']) && $score < $atts['min_score']) {
+
+			continue;
+
+		}
+		elseif (!empty($atts['max_score']) && $score > $atts['max_score']) {
+
+			continue;			
+		}
+		
 
 		$score_disp = '';
 
@@ -265,9 +299,7 @@ function codeable_display_reviews($atts){
 
 		$to_return.="</p></div></li>";
 
-		if ($review_number == $atts['number_to_show']) {
-			break;
-		}
+
 	}
 	$to_return.= '</ul>';
 

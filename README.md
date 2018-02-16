@@ -21,6 +21,9 @@ Stores expert and review information from the API in transients to lower number 
 * number_to_show, defaults to 4, how many to show
 * show_title=yes to show task title, defaults to no
 * show_date=yes to show review date, defaults to no
+* min_score, only shows reviews above and including this score (blank is no min)
+* max_score, only shows reviews below and including this score (blank is no max)
+* sort=rand, sorting options, valid value is just rand for now. Default is no sorting (profile page order)
 
 ### Optional atts: expert_image
 * circle=yes , default is yes shows image as a circle

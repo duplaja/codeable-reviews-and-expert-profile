@@ -6,6 +6,8 @@ Stores expert and review information from the API in transients to lower number 
 * Expert Information (1 day)
 * Reviews (4 hours)
 
+This plugin is compatible with Github Updater: https://github.com/afragen/github-updater/tree/master
+
 ## Shortcodes (codeable_id att required):
 
 | Shortcodes       | Item to Insert       |

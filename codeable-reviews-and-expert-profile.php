@@ -4,7 +4,7 @@ Plugin Name: Codeable Reviews and Expert Profile
 Plugin URI: https://dandulaney.com
 GitHub Plugin URI: https://github.com/duplaja/codeable-reviews-and-expert-profile
 Description: Gathers Codeable Reviews and Profile Information for a Codeable Expert
-Version: 1.2.1
+Version: 1.2.2
 Author: Dan Dulaney
 Author URI: https://dandulaney.com
 License: GPLv2
@@ -244,6 +244,7 @@ function codeable_display_reviews($atts){
 			'show_x_more' => 0,
 			'min_review_length'=> 0,
 			'has_picture'=> 'no',
+			'show_rating'=> 'yes',
 		), $atts, 'expert_completed' );
 
 	if (empty($atts['codeable_id'])) {
@@ -311,8 +312,11 @@ function codeable_display_reviews($atts){
 
 		$score_disp = '';
 
-		for ($i=0;$i<$score;$i++) {
-			$score_disp .= "<img src='".plugins_url( 'img/rating-star.png', __FILE__ )."' class='review_rating_star'>";
+		if ($atts['show_rating'] != 'no') {
+
+			for ($i=0;$i<$score;$i++) {
+				$score_disp .= "<img src='".plugins_url( 'img/rating-star.png', __FILE__ )."' class='review_rating_star'>";
+			}
 		}
 
 		$to_return.= "<li class='codeable_review'>
@@ -322,7 +326,13 @@ function codeable_display_reviews($atts){
 		if($atts['show_title'] == 'yes') {
 			$to_return.="<p class='review_task_title'>$task_title</p>";
 		}
-		$to_return.="<p class='review_rating'>Project Rating: <span style='display:inline-block'>$score_disp</span></p><p class='review_text'>$comment</p><p class='reviewer_name'>- $name";
+
+		if ($atts['show_rating'] != 'no') {
+
+			$to_return.="<p class='review_rating'>Project Rating: <span style='display:inline-block'>$score_disp</span></p>";
+		}
+
+		$to_return .= "<p class='review_text'>$comment</p><p class='reviewer_name'>- $name";
 
 		if($atts['show_date'] == 'yes') {
 

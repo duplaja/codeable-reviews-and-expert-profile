@@ -21,6 +21,7 @@ Stores expert and review information from the API in transients to lower number 
 * number_to_pull, defaults to 4, how many reviews to save from the api (can control how many show with show_x_more)
 * show_title=yes to show task title, defaults to no
 * show_date=yes to show review date, defaults to no
+* show_rating=no to hide the rating (default is show)
 * min_score, only shows reviews above and including this score (blank is no min)
 * max_score, only shows reviews below and including this score (blank is no max)
 * sort=rand, sorting options, valid value is just rand for now. Default is no sorting (profile page order)
@@ -50,6 +51,10 @@ Stores expert and review information from the API in transients to lower number 
 * Look at some sort of local caching of images to cut down on external calls to AWS
 
 == Changelog ==
+
+= 1.2.1 and 1.2.2 =
+* Changed number_to_show to number_to_pull (nonbreaking change)
+* Added show_rating=no att to reviews to hide rating / stars line
 
 = 1.2 =
 * Add start_at and show_x_more atts on reviews

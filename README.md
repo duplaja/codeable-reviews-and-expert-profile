@@ -36,3 +36,10 @@ Stores expert and review information from the API in transients to lower number 
 * theme=black sets a button theme: valid values are black, white, or anything else for no theme (defaults to black)
 
 ### No optional atts on expert_completed or expert_rating
+
+## Future Goals / Plans
+
+* Additional sort options
+* Impliment a "default" expert ID, referoo code as plugin settings (still could be overwritten on a shortcode level)
+* Continue to tweak and optimize code / display as needed
+* Look at some sort of local caching of images to cut down on external calls to AWS

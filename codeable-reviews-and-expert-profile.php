@@ -4,7 +4,7 @@ Plugin Name: Codeable Reviews and Expert Profile
 Plugin URI: https://dandulaney.com
 GitHub Plugin URI: https://github.com/duplaja/codeable-reviews-and-expert-profile
 Description: Gathers Codeable Reviews and Profile Information for a Codeable Expert
-Version: 1.1
+Version: 1.2
 Author: Dan Dulaney
 Author URI: https://dandulaney.com
 License: GPLv2
@@ -239,6 +239,10 @@ function codeable_display_reviews($atts){
 			'min_score'=> '',
 			'max_score'=> '',
 			'sort'=> '',
+			'start_at' => 1,
+			'show_x_more' => 0,
+			'min_review_length'=> 0,
+			'has_picture'=> 'no',
 		), $atts, 'expert_completed' );
 
 	if (empty($atts['codeable_id'])) {
@@ -257,9 +261,17 @@ function codeable_display_reviews($atts){
 
 
 	$to_return = '<ul class="codeable_reviews">';
-	$review_number = 0;
-	foreach ($codeable_review_data as $review) {
 
+	$review_num = 1;
+	$showed_this_run = 0;
+
+	foreach ($codeable_review_data as $review) {
+		
+		if ($review_num < $atts['start_at']) {
+			$review_num++;			
+			continue;
+		} 
+				
 		$task_title = $review->task_title;
 		$score = $review->score;
 		$time = $review->timestamp;
@@ -275,8 +287,16 @@ function codeable_display_reviews($atts){
 		elseif (!empty($atts['max_score']) && $score > $atts['max_score']) {
 
 			continue;			
+		} 
+		elseif ($atts['min_review_length'] != 0 && strlen($comment) < $atts['min_review_length']) {
+
+			continue;
+
 		}
-		
+		elseif ($atts['has_picture'] == 'yes' && $image == 'https://s3.amazonaws.com/app.codeable.io/avatars/default/medium_default.png') {
+			continue;
+
+		}		
 
 		$score_disp = '';
 
@@ -301,6 +321,13 @@ function codeable_display_reviews($atts){
 
 		$to_return.="</p></div></li>";
 
+		$showed_this_run++;
+
+		if ($showed_this_run >= $atts['show_x_more'] && $atts['show_x_more'] !=0) {
+
+			break;
+
+		}
 
 	}
 	$to_return.= '</ul>';

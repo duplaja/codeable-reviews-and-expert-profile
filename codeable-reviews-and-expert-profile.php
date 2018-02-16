@@ -68,7 +68,7 @@ function codeable_handle_review_transient( $codeable_id, $number_of_reviews ) {
 		$response             = wp_remote_get( 'https://api.codeable.io/users/' . $codeable_id . '/reviews/' );
 		$codeable_review_data = json_decode( wp_remote_retrieve_body( $response ) );
 
-		if ( $number_of_reviews > 4 ) {
+		if ( 4 < $number_of_reviews ) {
 
 			for ( $i = 2; $i <= $number_of_pages; $i++ ) {
 
@@ -84,7 +84,7 @@ function codeable_handle_review_transient( $codeable_id, $number_of_reviews ) {
 
 		//Parse off any "overages" from grabbing in batches of 4
 		$number_on_last_page = $number_of_reviews % 4;
-		if ( $number_on_last_page != 0 ) {
+		if ( 0 != $number_on_last_page ) {
 
 			$number_to_remove = 4 - $number_on_last_page;
 
@@ -123,10 +123,10 @@ function codeable_display_expert_image( $atts ) {
 
 	$return_image = "<img src='" . $codeable_image_url . "'";
 
-	if ( $atts['circle'] == 'yes' ) {
+	if ( 'yes' == $atts['circle'] ) {
 		$return_image .= " style='border-radius: 50%;'";
 	}
-	if ( $atts['class'] != 'codeable-profile-image' ) {
+	if ( 'codeable-profile-image' != $atts['class'] ) {
 
 		$class        = $atts['class'];
 		$return_image .= " class='codeable-profile-image $class'";
@@ -210,9 +210,9 @@ function codeable_display_expert_hire( $atts ) {
 
 	$button = "<a href='$codeable_direct_hire_link' class='codeable-hire-button";
 
-	if ( $atts['theme'] == 'black' ) {
+	if ( 'black' == $atts['theme'] ) {
 		$button .= ' hire-button-black';
-	} elseif ( $atts['theme'] == 'white' ) {
+	} elseif ( 'white' == $atts['theme'] ) {
 		$button .= ' hire-button-white';
 	}
 
@@ -249,7 +249,7 @@ function codeable_display_reviews( $atts ) {
 	$codeable_review_data = codeable_handle_review_transient( $atts['codeable_id'], $atts['number_to_show'] );
 
 
-	if ( $atts['sort'] == 'rand' ) {
+	if ( 'rand' == $atts['sort'] ) {
 
 		shuffle( $codeable_review_data );
 
@@ -287,12 +287,12 @@ function codeable_display_reviews( $atts ) {
 		<img src='$image' class='reviewer_image'>
 		<div class='review_info'>";
 
-		if ( $atts['show_title'] == 'yes' ) {
+		if ( 'yes' == $atts['show_title'] ) {
 			$to_return .= "<p class='review_task_title'>$task_title</p>";
 		}
 		$to_return .= "<p class='review_rating'>Project Rating: <span style='display:inline-block'>$score_disp</span></p><p class='review_text'>$comment</p><p class='reviewer_name'>- $name";
 
-		if ( $atts['show_date'] == 'yes' ) {
+		if ( 'yes' == $atts['show_date'] ) {
 
 			$pretty_date = date( 'F j Y', $time );
 			$to_return   .= ", <span class='review_date'>$pretty_date</span>";

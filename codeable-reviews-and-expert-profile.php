@@ -3,7 +3,7 @@
 Plugin Name: Codeable Reviews and Expert Profile
 Plugin URI: https://dandulaney.com
 Description: Gathers Codeable Reviews and Profile Information for a Codeable Expert
-Version: 0.8
+Version: 0.9
 Author: Dan Dulaney
 Author URI: https://dandulaney.com
 License: GPLv2
@@ -255,7 +255,7 @@ function codeable_display_reviews($atts){
 		if($atts['show_title'] == 'yes') {
 			$to_return.="<p class='review_task_title'>$task_title</p>";
 		}
-		$to_return.="<p class='review_rating'>Project Rating: $score_disp </p><p class='review_text'>$comment</p><p class='reviewer_name'>- $name";
+		$to_return.="<p class='review_rating'>Project Rating: <span style='display:inline-block'>$score_disp</span></p><p class='review_text'>$comment</p><p class='reviewer_name'>- $name";
 
 		if($atts['show_date'] == 'yes') {
 

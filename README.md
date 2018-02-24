@@ -18,7 +18,7 @@ Stores expert and review information from the API in transients to lower number 
 
 ## Optional Atts
 ### Optional atts: expert_reviews
-* number_to_pull, defaults to 4, how many reviews to save from the api (can control how many show with show_x_more)
+* number_to_pull, defaults to 20, how many reviews to save from the api (can control how many show with show_x_more)
 * show_title=yes to show task title, defaults to no
 * show_date=yes to show review date, defaults to no
 * show_rating=no to hide the rating (default is show)

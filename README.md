@@ -6,6 +6,12 @@ Stores expert and review information from the API in transients to lower number 
 * Expert Information (1 day)
 * Reviews (4 hours)
 
+## Sample Usage
+
+[expert_reviews codeable_id=31044 number_to_pull=50 min_score=5 show_x_more=5 min_review_length=1]
+
+(stores 50 latest reviews, then shows the 5 most recent that have a score of 5 and at least some message with the review)
+
 ## Shortcodes (codeable_id att required):
 
 | Shortcodes       | Item to Insert       |

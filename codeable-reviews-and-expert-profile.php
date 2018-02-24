@@ -4,7 +4,7 @@ Plugin Name: Codeable Reviews and Expert Profile
 Plugin URI: https://dandulaney.com
 GitHub Plugin URI: https://github.com/duplaja/codeable-reviews-and-expert-profile
 Description: Gathers Codeable Reviews and Profile Information for a Codeable Expert
-Version: 1.2.2
+Version: 1.3.0
 Author: Dan Dulaney
 Author URI: https://dandulaney.com
 License: GPLv2
@@ -13,12 +13,19 @@ License URI:
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+/**************************************
+* Function to enqueue plugin stylesheet
+***************************************/
+
 function codeable_css_enqueue() {
     wp_enqueue_style( 'codeable-reviews-and-experts-css', plugins_url( 'css/codeable-expert-styles.css', __FILE__ ) );
 }
 add_action( 'wp_enqueue_scripts', 'codeable_css_enqueue' );
 
 
+/****************************************
+* Function to pull / store / retrieve expert data
+*****************************************/
 function codeable_handle_expert_transient($codeable_id) {
 
 
@@ -43,6 +50,10 @@ function codeable_handle_expert_transient($codeable_id) {
 		return $codeable_expert_data;   
 	}
 }
+
+/****************************************
+* Function to pull / store / retrieve expert reviews
+*****************************************/
 
 function codeable_handle_review_transient($codeable_id,$number_of_reviews) {
 
@@ -72,15 +83,20 @@ function codeable_handle_review_transient($codeable_id,$number_of_reviews) {
 				$response = wp_remote_get('https://api.codeable.io/users/'.$codeable_id.'/reviews/?page='.$i);
 				$temp_review_data = json_decode(wp_remote_retrieve_body($response));
 
+				//Breaks out and stops if more reviews are requested than actually exist
+				if (empty($temp_review_data)) {
+					$broke_early = true;
+					break;
+				}
 
 				$codeable_review_data=array_merge($codeable_review_data,$temp_review_data);
 			}
 		}
 
 
-		//Parse off any "overages" from grabbing in batches of 4
+		//Parse off any "overages" from grabbing in batches of 4 (only if we didn't break early)
 		$number_on_last_page = $number_of_reviews % 4;
-		if ($number_on_last_page != 0) {
+		if ($number_on_last_page != 0 && !isset($broke_early)) {
 
 			$number_to_remove = 4 - $number_on_last_page;
 
@@ -100,13 +116,17 @@ function array_pop_n(array $arr, $n) {
     return array_splice($arr, 0, -$n);
 }
 
+
+/****************************
+* Function to display the expert image
+****************************/
 function codeable_display_expert_image( $atts ){
 
 	$atts = shortcode_atts(
 		array(
-			'codeable_id' => '',
-			'circle'=> 'yes',
-			'class'=> 'codeable-profile-image',
+			'codeable_id' => '',			//Codeable expert ID #
+			'circle'=> 'yes',			//Whether the image should be circular when displayed
+			'class'=> 'codeable-profile-image',	//Optional extra class to add for easier styling
 		), $atts, 'expert_image' );
 
 	if (empty($atts['codeable_id'])) {
@@ -114,6 +134,7 @@ function codeable_display_expert_image( $atts ){
 		return 'You must enter a valid Codeable Expert ID';
 	}
 
+	//Pulls expert data from API / Transient
 	$codeable_expert_data = codeable_handle_expert_transient($atts['codeable_id']);
 
 	$codeable_image_url= $codeable_expert_data->avatar->large_url;
@@ -140,12 +161,16 @@ function codeable_display_expert_image( $atts ){
 }
 add_shortcode( 'expert_image', 'codeable_display_expert_image' );
 
+/***************************************
+* Function to return expert rating ( returns decimal, text)
+****************************************/
+
 function codeable_display_expert_rating($atts) {
 
 
 	$atts = shortcode_atts(
 		array(
-			'codeable_id' => '',
+			'codeable_id' => '',	//Codeable expert ID
 		), $atts, 'expert_rating' );
 
 	if (empty($atts['codeable_id'])) {
@@ -153,6 +178,7 @@ function codeable_display_expert_rating($atts) {
 		return 'You must enter a valid Codeable Expert ID';
 	}
 
+	//Pulls expert data from API / transient
 	$codeable_expert_data = codeable_handle_expert_transient($atts['codeable_id']);
 
 	return $codeable_expert_data->average_rating;
@@ -160,12 +186,15 @@ function codeable_display_expert_rating($atts) {
 }
 add_shortcode( 'expert_rating', 'codeable_display_expert_rating' );
 
+/***********************************************************
+* Function to return number of completed tasks (returns int / text)
+*************************************************************/
 function codeable_display_expert_completed($atts) {
 
 
 	$atts = shortcode_atts(
 		array(
-			'codeable_id' => '',
+			'codeable_id' => '', //Expert ID
 		), $atts, 'expert_completed' );
 
 	if (empty($atts['codeable_id'])) {
@@ -180,15 +209,19 @@ function codeable_display_expert_completed($atts) {
 }
 add_shortcode( 'expert_completed', 'codeable_display_expert_completed' );
 
+/****************************************************
+* Function to create a button for a preferred task (Hire Me)
+****************************************************/
+
 function codeable_display_expert_hire($atts) {
 
 	$atts = shortcode_atts(
 		array(
-			'codeable_id' => '',
-			'message' => 'Hire Me',
-			'referoo' => '',
-			'class'=> '',
-			'theme' => 'black',
+			'codeable_id' => '',	//Expert ID
+			'message' => 'Hire Me',	//Message / text on button
+			'referoo' => '',	//Referoo code
+			'class'=> '',		//Optional class to add to button, for easier styling
+			'theme' => 'black',	//default theme (white, black, none)
 		), $atts, 'expert_hire' );
 
 	if (empty($atts['codeable_id'])) {
@@ -226,24 +259,27 @@ function codeable_display_expert_hire($atts) {
 
 add_shortcode( 'expert_hire', 'codeable_display_expert_hire' );
 
+/**************************************************************
+* Function to display expert reviews
+**************************************************************/
 
 function codeable_display_reviews($atts){
 
 	$atts = shortcode_atts(
 		array(
-			'codeable_id' => '',
-			'number_to_show'=>'',
-			'number_to_pull'=>4,
-			'show_title'=>'no',
-			'show_date'=>'no',
-			'min_score'=> '',
-			'max_score'=> '',
-			'sort'=> '',
-			'start_at' => 1,
-			'show_x_more' => 0,
-			'min_review_length'=> 0,
-			'has_picture'=> 'no',
-			'show_rating'=> 'yes',
+			'codeable_id' => '',	//expert ID
+			'number_to_show'=>'',	//Legacy, not used
+			'number_to_pull'=>20,	//how many to store
+			'show_title'=>'no',	//show project title or not
+			'show_date'=>'no',	//show review date or not
+			'min_score'=> '',	//minimum score to allow (disp)
+			'max_score'=> '',	//maximum score to allow (disp)
+			'sort'=> '',		//order to display in (rand only option currently, beside default new to old)
+			'start_at' => 1,	//Which one of the matching stored to start at, useful for chunking.
+			'show_x_more' => 0,	//How many to display out of matches (0 is max possible)
+			'min_review_length'=> 0,//Minimum review length to disp
+			'has_picture'=> 'no',	//Control showing only those with set profile images
+			'show_rating'=> 'yes',	//Show rating on each review
 		), $atts, 'expert_completed' );
 
 	if (empty($atts['codeable_id'])) {
@@ -251,6 +287,7 @@ function codeable_display_reviews($atts){
 		return 'You must enter a valid Codeable Expert ID';
 	}
 
+	//Legacy shortcode att, added to prevent breaking change from number_to_show to better named number_to_pull
 	if (!empty($atts['number_to_show'])) {
 
 		$to_pull = $atts['number_to_show'];
@@ -260,10 +297,57 @@ function codeable_display_reviews($atts){
 		$to_pull = $atts['number_to_pull'];
 	}
 	
-
+	
+	//Retrieves (from api or transient) all stored reviews
 	$codeable_review_data = codeable_handle_review_transient($atts['codeable_id'],$to_pull);
 
 
+	//Filters out / removes all with default images, if that att is set
+	if ($atts['has_picture'] == 'yes') {
+
+		$codeable_review_data = array_filter($codeable_review_data,function($review){
+
+			if( $review->reviewer->avatar->medium_url != 'https://s3.amazonaws.com/app.codeable.io/avatars/default/medium_default.png') {
+		return true;
+	} else {
+		return false;
+	}
+		});
+
+	}
+
+	//Filters out / removes all with review length less than the minimum
+	if ($atts['min_review_length'] != 0) {
+
+		$min_review_length = $atts['min_review_length'];
+
+		$codeable_review_data = array_filter($codeable_review_data,function($review) use($min_review_length){
+    			return strlen($review->comment) > $min_review_length;
+		});
+
+	}
+
+	//Filters out / removes all above the max score 
+	if (!empty($atts['max_score'])) {
+		
+		$max_score = $atts['max_score'];
+		$codeable_review_data = array_filter($codeable_review_data,function($review) use($max_score){
+    			return $review->score <= $max_score;
+		});
+
+	}
+
+	//Filters out / removes all above the max score 
+	if (!empty($atts['min_score'])) {
+		
+		$min_score = $atts['min_score'];
+		$codeable_review_data = array_filter($codeable_review_data,function($review) use($min_score){
+    			return $review->score >= $min_score;
+		});
+
+	}
+
+	//Shuffles randomly, doesn't work with the offset
 	if ($atts['sort'] == 'rand') {
 
 		shuffle($codeable_review_data);
@@ -289,25 +373,6 @@ function codeable_display_reviews($atts){
 		$comment = $review->comment;
 		$name = $review->reviewer->full_name;
 		$image = $review->reviewer->avatar->medium_url;
-
-		if (!empty($atts['min_score']) && $score < $atts['min_score']) {
-
-			continue;
-
-		}
-		elseif (!empty($atts['max_score']) && $score > $atts['max_score']) {
-
-			continue;			
-		} 
-		elseif ($atts['min_review_length'] != 0 && strlen($comment) < $atts['min_review_length']) {
-
-			continue;
-
-		}
-		elseif ($atts['has_picture'] == 'yes' && $image == 'https://s3.amazonaws.com/app.codeable.io/avatars/default/medium_default.png') {
-			continue;
-
-		}		
 
 		$score_disp = '';
 

@@ -25,8 +25,8 @@ Stores expert and review information from the API in transients to lower number 
 * min_score, only shows reviews above and including this score (blank is no min)
 * max_score, only shows reviews below and including this score (blank is no max)
 * sort=rand, sorting options, valid value is just rand for now. Default is no sorting (profile page order)
-* start_at (default 1), useful for chunking in offsets. (Does not work for now with random, and some filtering)
-* show_x_more (default is show all), show the next x reviews. (Does not work for now with random, and some filtering)
+* start_at (default 1), useful for chunking in offsets. (Does not work for now with random)
+* show_x_more (default is show all), show the next x reviews (from offset if set, or from start).
 * min_review_length (default is show all), number of characters minimum in review message to show the review. Set to 1 to hide blank reviews, or larger number to hide short reviews. 
 * has_picture, set to "yes" to hide all reviews that use the default profile image (may break if default no profile images switches, I will have to fix manually if so)
 
@@ -44,13 +44,18 @@ Stores expert and review information from the API in transients to lower number 
 
 ## Future Goals / Plans
 
-* Fix compatibility between offsets and filters
 * Additional sort options
 * Impliment a "default" expert ID, referoo code as plugin settings (still could be overwritten on a shortcode level)
 * Continue to tweak and optimize code / display as needed
 * Look at some sort of local caching of images to cut down on external calls to AWS
 
 == Changelog ==
+
+= 1.3.0 =
+* Greatly improved filtering using array_filter (now works with offsets)
+* Increased default number to pull to 20
+* Handled edge case where user tries to pull more reviews than they actually have
+* Better commenting throughout plugin code
 
 = 1.2.1 and 1.2.2 =
 * Changed number_to_show to number_to_pull (nonbreaking change)

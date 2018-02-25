@@ -4,7 +4,7 @@ Plugin Name: Codeable Reviews and Expert Profile
 Plugin URI: https://dandulaney.com
 GitHub Plugin URI: https://github.com/duplaja/codeable-reviews-and-expert-profile
 Description: Gathers Codeable Reviews and Profile Information for a Codeable Expert
-Version: 1.4.0
+Version: 1.4.1
 Author: Dan Dulaney
 Author URI: https://dandulaney.com
 License: GPLv2
@@ -139,7 +139,7 @@ function codeable_display_expert_image( $atts ){
 
 	$codeable_image_url= $codeable_expert_data->avatar->large_url;
 	
-	$return_image = "<img src='".$codeable_image_url."'";
+	$return_image = "<img src='".esc_url($codeable_image_url)."'";
 
 	if ($atts['circle'] == 'yes') {
 		$return_image .= " style='border-radius: 50%;'";
@@ -147,7 +147,7 @@ function codeable_display_expert_image( $atts ){
 	if ($atts['class'] !='codeable-profile-image') {
 
 		$class = $atts['class'];
-		$return_image .= " class='codeable-profile-image $class'";
+		$return_image .= " class='codeable-profile-image " .esc_attr($class)."'";
 
 	} else {
 
@@ -231,7 +231,7 @@ function codeable_display_expert_hire($atts) {
 
 	$message = $atts['message'];
 	
-	$codeable_direct_hire_link = 'https://app.codeable.io/tasks/new?preferredContractor='.$atts['codeable_id'];
+	$codeable_direct_hire_link = 'https://app.codeable.io/tasks/new?preferredContractor='.absint($atts['codeable_id']);
 	
 	if (!empty($atts['referoo'])) {
 		
@@ -248,7 +248,7 @@ function codeable_display_expert_hire($atts) {
 	}
 	
 	if (!empty($atts['class'])) {
-		$button.=' '.$atts['class'];
+		$button.=' '.esc_attr($atts['class']);
 	}
 	
 	$button.="'>$message</a>";
@@ -434,19 +434,19 @@ function codeable_display_reviews($atts){
 		}
 
 		$to_return.= "<li class='codeable_review review_$review_id reviewer_$reviewer_id'>
-		<img src='$image' class='reviewer_image'>
+		<img src='".esc_url($image)."' class='reviewer_image'>
 		<div class='review_info'>";
 
 		if($atts['show_title'] == 'yes') {
-			$to_return.="<p class='review_task_title'>$task_title</p>";
+			$to_return.="<p class='review_task_title'>".esc_html($task_title)."</p>";
 		}
 
 		if ($atts['show_rating'] != 'no') {
 
-			$to_return.="<p class='review_rating'>Project Rating: <span style='display:inline-block'>$score_disp</span></p>";
+			$to_return.="<p class='review_rating'>Project Rating: <span style='display:inline-block'>".$score_disp."</span></p>";
 		}
 
-		$to_return .= "<p class='review_text'>$comment</p><p class='reviewer_name'>- $name";
+		$to_return .= "<p class='review_text'>".esc_html($comment)."</p><p class='reviewer_name'>- ".esc_html($name);
 
 		if($atts['show_date'] == 'yes') {
 

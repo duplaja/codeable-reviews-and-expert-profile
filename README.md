@@ -61,6 +61,9 @@ Stores expert and review information from the API in transients to lower number 
 
 == Changelog ==
 
+= 1.4.1 =
+* Added sanitizing of external data (esc_html / esc_url where appropriate)
+
 = 1.4.0 =
 * Additional review filtering options (filter out by client / review ID, or limit to ONLY client / review ID lists)
 * Added additional classes to review li container, to better expose client ID and review ID to use with the above options.

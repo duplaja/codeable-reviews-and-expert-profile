@@ -4,7 +4,7 @@ Plugin Name: Codeable Reviews and Expert Profile
 Plugin URI: https://dandulaney.com
 GitHub Plugin URI: https://github.com/duplaja/codeable-reviews-and-expert-profile
 Description: Gathers Codeable Reviews and Profile Information for a Codeable Expert
-Version: 1.3.0
+Version: 1.4.0
 Author: Dan Dulaney
 Author URI: https://dandulaney.com
 License: GPLv2
@@ -280,6 +280,10 @@ function codeable_display_reviews($atts){
 			'min_review_length'=> 0,//Minimum review length to disp
 			'has_picture'=> 'no',	//Control showing only those with set profile images
 			'show_rating'=> 'yes',	//Show rating on each review
+			'filter_clients' => '',	//Comma seperated list of client IDs to filter out
+			'filter_reviews' => '', //Comma seperated list of review IDs to filter out
+			'only_clients' => '', //Comma seperated list of client IDs to include (filters all others)
+			'only_reviews' => '', //Comma seperated list of review IDs to include (filters all others)
 		), $atts, 'expert_completed' );
 
 	if (empty($atts['codeable_id'])) {
@@ -308,10 +312,10 @@ function codeable_display_reviews($atts){
 		$codeable_review_data = array_filter($codeable_review_data,function($review){
 
 			if( $review->reviewer->avatar->medium_url != 'https://s3.amazonaws.com/app.codeable.io/avatars/default/medium_default.png') {
-		return true;
-	} else {
-		return false;
-	}
+				return true;
+			} else {
+				return false;
+			}
 		});
 
 	}
@@ -322,7 +326,7 @@ function codeable_display_reviews($atts){
 		$min_review_length = $atts['min_review_length'];
 
 		$codeable_review_data = array_filter($codeable_review_data,function($review) use($min_review_length){
-    			return strlen($review->comment) > $min_review_length;
+    			return strlen($review->comment) >= $min_review_length;
 		});
 
 	}
@@ -343,6 +347,50 @@ function codeable_display_reviews($atts){
 		$min_score = $atts['min_score'];
 		$codeable_review_data = array_filter($codeable_review_data,function($review) use($min_score){
     			return $review->score >= $min_score;
+		});
+
+	}
+
+	//Filters out matching client ID #'s
+	if (!empty($atts['filter_clients'])) {
+		
+		$filter_clients = preg_replace('/\s+/', '', $atts['filter_clients']);
+		$clients_array = explode(',',$filter_clients);
+		$codeable_review_data = array_filter($codeable_review_data,function($review) use($clients_array){
+    			return !in_array($review->reviewer->id,$clients_array);
+		});
+
+	}
+
+	//Filters out matching review ID #'s 
+	if (!empty($atts['filter_reviews'])) {
+		
+		$filter_reviews = preg_replace('/\s+/', '', $atts['filter_reviews']);
+		$reviews_array = explode(',',$filter_reviews);
+		$codeable_review_data = array_filter($codeable_review_data,function($review) use($reviews_array){
+    			return !in_array($review->id,$reviews_array);
+		});
+
+	}
+
+	//Filters out all NON matching client ID #'s
+	if (!empty($atts['only_clients'])) {
+		
+		$only_clients = preg_replace('/\s+/', '', $atts['only_clients']);
+		$clients_array = explode(',',$only_clients);
+		$codeable_review_data = array_filter($codeable_review_data,function($review) use($clients_array){
+    			return in_array($review->reviewer->id,$clients_array);
+		});
+
+	}
+
+	//Filters out all NON matching review ID #'s 
+	if (!empty($atts['only_reviews'])) {
+		
+		$only_reviews = preg_replace('/\s+/', '', $atts['only_reviews']);
+		$reviews_array = explode(',',$only_reviews);
+		$codeable_review_data = array_filter($codeable_review_data,function($review) use($reviews_array){
+    			return in_array($review->id,$reviews_array);
 		});
 
 	}
@@ -373,6 +421,8 @@ function codeable_display_reviews($atts){
 		$comment = $review->comment;
 		$name = $review->reviewer->full_name;
 		$image = $review->reviewer->avatar->medium_url;
+		$reviewer_id = $review->reviewer->id;
+		$review_id = $review->id;
 
 		$score_disp = '';
 
@@ -383,7 +433,7 @@ function codeable_display_reviews($atts){
 			}
 		}
 
-		$to_return.= "<li class='codeable_review'>
+		$to_return.= "<li class='codeable_review review_$review_id reviewer_$reviewer_id'>
 		<img src='$image' class='reviewer_image'>
 		<div class='review_info'>";
 

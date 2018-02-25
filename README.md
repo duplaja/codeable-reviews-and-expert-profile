@@ -35,6 +35,10 @@ Stores expert and review information from the API in transients to lower number 
 * show_x_more (default is show all), show the next x reviews (from offset if set, or from start).
 * min_review_length (default is show all), number of characters minimum in review message to show the review. Set to 1 to hide blank reviews, or larger number to hide short reviews. 
 * has_picture, set to "yes" to hide all reviews that use the default profile image (may break if default no profile images switches, I will have to fix manually if so)
+* filter_clients, comma seperated list of client IDs to exclude from display
+* filter_reviews, comma seperated list of review IDs to exclude from display
+* only_clients, comma serpated list of client IDs to exclusively display (other filters still apply)
+* only_reviews, comma serpated list of review IDs to exclusively display (other filters still apply)
 
 ### Optional atts: expert_image
 * circle=yes , default is yes shows image as a circle
@@ -56,6 +60,10 @@ Stores expert and review information from the API in transients to lower number 
 * Look at some sort of local caching of images to cut down on external calls to AWS
 
 == Changelog ==
+
+= 1.4.0 =
+* Additional review filtering options (filter out by client / review ID, or limit to ONLY client / review ID lists)
+* Added additional classes to review li container, to better expose client ID and review ID to use with the above options.
 
 = 1.3.0 =
 * Greatly improved filtering using array_filter (now works with offsets)

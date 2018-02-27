@@ -4,7 +4,7 @@ Plugin Name: Codeable Reviews and Expert Profile
 Plugin URI: https://dandulaney.com
 GitHub Plugin URI: https://github.com/duplaja/codeable-reviews-and-expert-profile
 Description: Gathers Codeable Reviews and Profile Information for a Codeable Expert
-Version: 1.4.1
+Version: 1.5.0
 Author: Dan Dulaney
 Author URI: https://dandulaney.com
 License: GPLv2
@@ -282,8 +282,12 @@ function codeable_display_reviews($atts){
 			'show_rating'=> 'yes',	//Show rating on each review
 			'filter_clients' => '',	//Comma seperated list of client IDs to filter out
 			'filter_reviews' => '', //Comma seperated list of review IDs to filter out
-			'only_clients' => '', //Comma seperated list of client IDs to include (filters all others)
-			'only_reviews' => '', //Comma seperated list of review IDs to include (filters all others)
+			'only_clients' => '',	//Comma seperated list of client IDs to include (filters all others)
+			'only_reviews' => '',	//Comma seperated list of review IDs to include (filters all others)
+			'schema' => '', 	//Send yes to include review schema (once per page only)
+			'schema_desc' => 'Custom WordPress work through Codeable.io', //Product description for schema
+			'start_time' => '',	//Unix timestamp, shows reviews after this time
+			'end_time' => '', 	//Unix timestamp, shows reviews before this time
 		), $atts, 'expert_completed' );
 
 	if (empty($atts['codeable_id'])) {
@@ -305,6 +309,28 @@ function codeable_display_reviews($atts){
 	//Retrieves (from api or transient) all stored reviews
 	$codeable_review_data = codeable_handle_review_transient($atts['codeable_id'],$to_pull);
 
+	$schema = $atts['schema'];
+	if ($schema=='yes') {
+
+		$codeable_expert_data = codeable_handle_expert_transient($atts['codeable_id']);
+
+		$schema_data = '
+		<script type="application/ld+json">
+		{
+		  "@context": "http://schema.org",
+		  "@type": "Product",
+		  "aggregateRating": {
+		    "@type": "AggregateRating",
+		    "ratingValue": "'.$codeable_expert_data->average_rating.'",
+		    "reviewCount": "'.$codeable_expert_data->completed_tasks_count.'"
+		  },
+		  "description": "'.$atts['schema_desc'].'",
+		  "name": "'.$codeable_expert_data->full_name.'",
+		  "image": "'.$codeable_expert_data->avatar->large_url.'",
+		  "review": [
+'; 		
+
+	}
 
 	//Filters out / removes all with default images, if that att is set
 	if ($atts['has_picture'] == 'yes') {
@@ -341,12 +367,32 @@ function codeable_display_reviews($atts){
 
 	}
 
-	//Filters out / removes all above the max score 
+	//Filters out / removes all below the min score 
 	if (!empty($atts['min_score'])) {
 		
 		$min_score = $atts['min_score'];
 		$codeable_review_data = array_filter($codeable_review_data,function($review) use($min_score){
     			return $review->score >= $min_score;
+		});
+
+	}
+
+	//Shows only reviews published after the unix timestamp for start time 
+	if (!empty($atts['start_time'])) {
+		
+		$start_time = $atts['start_time'];
+		$codeable_review_data = array_filter($codeable_review_data,function($review) use($start_time){
+    			return $review->timestamp >= $start_time;
+		});
+
+	}
+
+	//Shows only reviews published before the unix timestamp for end time
+	if (!empty($atts['end_time'])) {
+		
+		$end_time = $atts['end_time'];
+		$codeable_review_data = array_filter($codeable_review_data,function($review) use($end_time){
+    			return $review->timestamp <= $end_time;
 		});
 
 	}
@@ -413,7 +459,8 @@ function codeable_display_reviews($atts){
 		if ($review_num < $atts['start_at']) {
 			$review_num++;			
 			continue;
-		} 
+		}
+
 				
 		$task_title = $review->task_title;
 		$score = $review->score;
@@ -423,6 +470,30 @@ function codeable_display_reviews($atts){
 		$image = $review->reviewer->avatar->medium_url;
 		$reviewer_id = $review->reviewer->id;
 		$review_id = $review->id;
+
+
+		if($schema=='yes') {
+
+		    if ($showed_this_run != 0) {
+
+			$schema_data.=',';
+		    }
+		    $schema_data.='
+			{
+		      "@type": "Review",
+		      "author": "'.$name.'",
+		      "datePublished": "'.date('Y-m-d',$time).'",
+		      "description": "'.$comment.'",
+		      "name": "",
+		      "reviewRating": {
+		        "@type": "Rating",
+		        "bestRating": "5",
+		        "ratingValue": "'.$score.'",
+		        "worstRating": "1"
+		      }
+		    }';
+		} 
+
 
 		$score_disp = '';
 
@@ -466,6 +537,17 @@ function codeable_display_reviews($atts){
 
 	}
 	$to_return.= '</ul>';
+
+	if($schema == 'yes') {
+
+		$schema_data.='
+		    
+		  ]
+		}
+		</script>';
+
+		$to_return.=$schema_data;
+	}
 
 	return $to_return;
 

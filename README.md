@@ -39,6 +39,10 @@ Stores expert and review information from the API in transients to lower number 
 * filter_reviews, comma seperated list of review IDs to exclude from display
 * only_clients, comma serpated list of client IDs to exclusively display (other filters still apply)
 * only_reviews, comma serpated list of review IDs to exclusively display (other filters still apply)
+* schema=yes Enable structured data using json-ld (aggregate review, review markup) (yes to enable, only use this once per page for now)
+* schema_desc="Your description here" (default is: Custom WordPress work through Codeable.io)
+* start_time (unix timestamp, will only show reviews published after this time)
+* end_time (unix timestamp, will only show reviews published before this time)
 
 ### Optional atts: expert_image
 * circle=yes , default is yes shows image as a circle
@@ -60,6 +64,10 @@ Stores expert and review information from the API in transients to lower number 
 * Look at some sort of local caching of images to cut down on external calls to AWS
 
 == Changelog ==
+
+= 1.5.0 =
+* First version of schema / structured data (aggregate review, reviews): schema, schema_desc atts
+* Added ability to filter displayed reviews by start_time and end_time (must be in Unix timestamp format)
 
 = 1.4.1 =
 * Added sanitizing of external data (esc_html / esc_url where appropriate)

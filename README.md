@@ -12,7 +12,7 @@ Stores expert and review information from the API in transients to lower number 
 
 (stores 50 latest reviews, then shows the 5 most recent that have a score of 5 and at least some message with the review)
 
-##Gutenblocks (New!)##
+## Gutenblocks (New!)
 
 I've added 3 Gutenberg Blocks (picture, button, and reviews list), with all options from the shortcode below. These are still a work in progress! If you are so inclined to try them out, please let me know how they work for you. Keep an eye out for updates to these, as far as layout and structure.
 
@@ -70,6 +70,9 @@ I've added 3 Gutenberg Blocks (picture, button, and reviews list), with all opti
 * Look at some sort of local caching of images to cut down on external calls to AWS
 
 == Changelog ==
+
+= 2.0.1 =
+* Rudimentary show / hide toggle for inputs on Review List block
 
 = 2.0.0 =
 * Initial Gutenberg Update

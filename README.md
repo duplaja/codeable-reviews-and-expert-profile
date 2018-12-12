@@ -12,6 +12,10 @@ Stores expert and review information from the API in transients to lower number 
 
 (stores 50 latest reviews, then shows the 5 most recent that have a score of 5 and at least some message with the review)
 
+##Gutenblocks (New!)##
+
+I've added 3 Gutenberg Blocks (picture, button, and reviews list), with all options from the shortcode below. These are still a work in progress! If you are so inclined to try them out, please let me know how they work for you. Keep an eye out for updates to these, as far as layout and structure.
+
 ## Shortcodes (codeable_id att required):
 
 | Shortcodes       | Item to Insert       |
@@ -58,12 +62,18 @@ Stores expert and review information from the API in transients to lower number 
 
 ## Future Goals / Plans
 
+* Blocks: Work out additional styling options / make them more useful
+* Blocks: Build pre-formatted blocks combining shortcodes (number of tasks, picture, average) in a nice layout.
 * Additional sort options
 * Impliment a "default" expert ID, referoo code as plugin settings (still could be overwritten on a shortcode level)
 * Continue to tweak and optimize code / display as needed
 * Look at some sort of local caching of images to cut down on external calls to AWS
 
 == Changelog ==
+
+= 2.0.0 =
+* Initial Gutenberg Update
+* Added Review List, Expert Image, and Hire Button blocks (WIP)
 
 = 1.5.0 =
 * First version of schema / structured data (aggregate review, reviews): schema, schema_desc atts

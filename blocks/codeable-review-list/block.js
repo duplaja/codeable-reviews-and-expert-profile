@@ -217,12 +217,6 @@
 				props.setAttributes({ filter_reviews: event.target.value}); 
 			}
 
-			function checkHidden() {
-				if (view_toggle == 'view'){
-					toggleHideAll();
-				}
-			}
-
 			function toggle_visibility(id) {
 				var e = document.getElementById(id);
 				if(e.style.display == 'block')
@@ -241,7 +235,7 @@
 
 			return el('p', {className: className },
 				el('h3',{ className: 'codeable-header-backend'},'Codeable Reviews List Block ',el('button',{onClick: toggleOnClick},'Show / Hide Inputs')), 
-				el('ul',{ className: 'codeable-editor-ul', id: 'codeable-editor-ul-reviews-container-1'},
+				el('ul',{ className: 'codeable-editor-ul', id: 'codeable-editor-ul-reviews-container-1', style: {'display':'none'}},
 					el('li',{},
 						el('label',{for: 'codeable_id' },'Codeable ID*: '),
 						el('br'),
@@ -475,7 +469,7 @@
 					),				
 					
 				), 
-				el('ul',{ className: 'codeable-editor-ul-longer', id: 'codeable-editor-ul-reviews-container-2'},
+				el('ul',{ className: 'codeable-editor-ul-longer', id: 'codeable-editor-ul-reviews-container-2', style: {'display':'none'}},
 					el('li',{},
 						el('label',{for: 'schema_desc', className: 'codeable-line-input-backend-label'},'Schema Desc: '),
 						el('br'),

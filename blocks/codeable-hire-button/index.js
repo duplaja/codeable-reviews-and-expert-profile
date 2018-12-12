@@ -15,6 +15,9 @@
 	 */
 	var __ = wp.i18n.__;
 
+
+	var inst = wp.compose.withInstanceId;
+
 	/**
 	 * Every block starts by registering a new block type definition.
 	 * @see https://wordpress.org/gutenberg/handbook/block-api/
@@ -82,6 +85,8 @@
 			var classtemp = props.attributes.class;
 			var theme = props.attributes.theme;
 
+			var instance_id = props.clientId;
+
 			function updateID(event) {
 				props.setAttributes({ codeable_id: event.target.value });
 			}
@@ -102,48 +107,48 @@
 				el('h3',{ className: 'codeable-header-backend'},'Codeable Hire Button'),
 				el('ul',{className: 'codeable-editor-ul'},
 					el('li',{},
-						el('label',{for: 'codeable_id' },'Codeable ID*: '),
+						el('label',{for: instance_id+'codeable_id' },'Codeable ID*: '),
 						el('br'),
 						el('input', { 
 							value: codeable_id, 
 							onChange: updateID,
-							id: 'codeable_id',
+							id: instance_id+'codeable_id',
 							type: 'number',
 							className: 'codeable-input-backend',
 							title: 'Required: From Your "Hire Me" Link'
 						}),
 					),
 					el('li',{},
-						el('label',{for: 'referoo' },'Referoo Code: '),
+						el('label',{for: instance_id+'referoo' },'Referoo Code: '),
 						el('br'),
 						el('input', { 
 							value: referoo, 
 							onChange: updateReferoo,
-							id: 'referoo',
+							id: instance_id+'referoo',
 							type: 'text',
 							className: 'codeable-input-backend',
 							title: 'See Referoo Panel for your code (string)'
 						}),
 					),
 					el('li',{},
-						el('label',{for: 'message' },'Button Text: '),
+						el('label',{for: instance_id+'message' },'Button Text: '),
 						el('br'),
 						el('input', { 
 							value: message, 
 							onChange: updateMessage,
-							id: 'message',
+							id: instance_id+'message',
 							type: 'text',
 							className: 'codeable-input-backend',
 							title: 'Button Text'
 						}),
 					),
 					el('li',{},
-						el('label',{for: 'theme' },'Theme'),
+						el('label',{for: instance_id+'theme' },'Theme'),
 						el('br'),
 						el('select', {
 							value: theme, 
 							onChange: updateTheme,
-							id: 'theme',
+							id: instance_id+'theme',
 							className: 'codeable-input-backend',
 							title: 'Pick from some pre-created button themes'
 						}, 
@@ -153,12 +158,12 @@
 						)
 					),
 					el('li',{},
-						el('label',{for: 'class' },'Custom Class: '),
+						el('label',{for: instance_id+'class' },'Custom Class: '),
 						el('br'),
 						el('input', { 
 							value: classtemp, 
 							onChange: updateClass,
-							id: 'class',
+							id: instance_id+'class',
 							type: 'text',
 							className: 'codeable-input-backend',
 							title: 'Add a custom class to your button for additional styling.'

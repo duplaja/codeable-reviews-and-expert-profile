@@ -71,6 +71,9 @@ I've added 3 Gutenberg Blocks (picture, button, and reviews list), with all opti
 
 == Changelog ==
 
+= 2.0.3 =
+* Bugfix: Fixed issues caused by non-unique IDs in editor (toggles, lables)
+
 = 2.0.1 & 2.0.2 =
 * Rudimentary show / hide toggle for inputs on Review List block (2.0.1)
 * Reviews list inputs hidden by default (2.0.2)

@@ -15,6 +15,9 @@
 	 */
 	var __ = wp.i18n.__;
 
+
+	var inst = wp.compose.withInstanceId;
+
 	/**
 	 * Every block starts by registering a new block type definition.
 	 * @see https://wordpress.org/gutenberg/handbook/block-api/
@@ -70,6 +73,8 @@
 			var circle = props.attributes.circle;
 			var classtemp = props.attributes.class;
 
+			var instance_id = props.clientId;
+
 			function updateID(event) {
 				props.setAttributes({ codeable_id: event.target.value });
 			}
@@ -84,24 +89,24 @@
 				el('h3',{ className: 'codeable-header-backend'},'Codeable Expert Image'),
 				el('ul',{className: 'codeable-editor-ul'},
 					el('li',{},
-						el('label',{for: 'codeable_id' },'Codeable ID*: '),
+						el('label',{for: instance_id+'codeable_id' },'Codeable ID*: '),
 						el('br'),
 						el('input', { 
 							value: codeable_id, 
 							onChange: updateID,
-							id: 'codeable_id',
+							id: instance_id+'codeable_id',
 							type: 'number',
 							className: 'codeable-input-backend',
 							title: 'Required: From Your "Hire Me" Link'
 						}),
 					),
 					el('li',{},
-						el('label',{for: 'circle' },'Image Shape'),
+						el('label',{for: instance_id+'circle' },'Image Shape'),
 						el('br'),
 						el('select', {
 							value: circle, 
 							onChange: updateCircle,
-							id: 'circle',
+							id: instance_id+'circle',
 							className: 'codeable-input-backend'
 						}, 
 							el('option',{ value: 'no' },'Square'),
@@ -110,12 +115,12 @@
 						)
 					),
 					el('li',{},
-						el('label',{for: 'class' },'Custom Class: '),
+						el('label',{for: instance_id+'class' },'Custom Class: '),
 						el('br'),
 						el('input', { 
 							value: classtemp, 
 							onChange: updateClass,
-							id: 'class',
+							id: instance_id+'class',
 							type: 'text',
 							className: 'codeable-input-backend',
 							title: 'Add a custom class to your image for additional styling.'

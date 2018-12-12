@@ -15,6 +15,8 @@
 	 */
 	var __ = wp.i18n.__;
 
+	var inst = wp.compose.withInstanceId;
+
 	/**
 	 * Every block starts by registering a new block type definition.
 	 * @see https://wordpress.org/gutenberg/handbook/block-api/
@@ -155,6 +157,7 @@
 			var only_clients = props.attributes.only_clients;
 			var only_reviews = props.attributes.only_reviews;
 
+			var instance_id = props.clientId;
 
 			function updateID(event) {
 				props.setAttributes({ codeable_id: event.target.value });
@@ -227,34 +230,34 @@
 
 			function toggleOnClick() {
 			
-				toggle_visibility('codeable-editor-ul-reviews-container-1');
-				toggle_visibility('codeable-editor-ul-reviews-container-2');
+				toggle_visibility(instance_id+'codeable-editor-ul-reviews-container-1');
+				toggle_visibility(instance_id+'codeable-editor-ul-reviews-container-2');
 			
 			}
 
 
 			return el('p', {className: className },
 				el('h3',{ className: 'codeable-header-backend'},'Codeable Reviews List Block ',el('button',{onClick: toggleOnClick},'Show / Hide Inputs')), 
-				el('ul',{ className: 'codeable-editor-ul', id: 'codeable-editor-ul-reviews-container-1', style: {'display':'none'}},
+				el('ul',{ className: 'codeable-editor-ul', id: instance_id+'codeable-editor-ul-reviews-container-1', style: {'display':'none'}},
 					el('li',{},
-						el('label',{for: 'codeable_id' },'Codeable ID*: '),
+						el('label',{for: instance_id+'codeable_id' },'Codeable ID*: '),
 						el('br'),
 						el('input', { 
 							value: codeable_id, 
 							onChange: updateID,
-							id: 'codeable_id',
+							id: instance_id+'codeable_id',
 							type: 'number',
 							className: 'codeable-input-backend',
 							title: 'Required: From Your "Hire Me" Link'
 						}),		
 					),
 					el('li',{},
-						el('label',{for: 'number_to_pull' },'Num To Pull: '),
+						el('label',{for: instance_id+'number_to_pull' },'Num To Pull: '),
 						el('br'),
 						el('select', { 
 							value: number_to_pull, 
 							onChange: updateNumPull,
-							id: 'number_to_pull',
+							id: instance_id+'number_to_pull',
 							className: 'codeable-input-backend',
 							title: 'How many reviews to pull from API, pre filtering. If you filter a lot, pull more.'
 						}, 
@@ -270,12 +273,12 @@
 										
 					),
 					el('li',{},
-						el('label',{for: 'show_x_more' },'Num to Show'),
+						el('label',{for: instance_id+'show_x_more' },'Num to Show'),
 						el('br'),
 						el('select', { 
 							value: show_x_more, 
 							onChange: updateShowXMore,
-							id: 'show_x_more',
+							id: instance_id+'show_x_more',
 							className: 'codeable-input-backend'
 						}, 
 							el('option',{ value: '0' },'Max Possible'),
@@ -296,12 +299,12 @@
 										
 					),
 					el('li',{},
-						el('label',{for: 'min_review_length' },'Review Len (filter): '),
+						el('label',{for: instance_id+'min_review_length' },'Review Len (filter): '),
 						el('br'),
 						el('select', { 
 							value: min_review_length, 
 							onChange: updateMinReviewLength,
-							id: 'min_review_length',
+							id: instance_id+'min_review_length',
 							className: 'codeable-input-backend'
 						}, 
 							el('option',{ value: '0' },'Show All'),
@@ -312,12 +315,12 @@
 						)				
 					),
 					el('li',{},
-						el('label',{for: 'min_score' },'Min Score: (filter)'),
+						el('label',{for: instance_id+'min_score' },'Min Score: (filter)'),
 						el('br'),
 						el('select', {
 							value: min_score, 
 							onChange: updateMinScore,
-							id: 'min_score',
+							id: instance_id+'min_score',
 							className: 'codeable-input-backend'
 						}, 
 							el('option',{ value: '5' },'5'),
@@ -329,12 +332,12 @@
 						)				
 					),
 					el('li',{},
-						el('label',{for: 'max_score' },'Max Score (filter): '),
+						el('label',{for: instance_id+'max_score' },'Max Score (filter): '),
 						el('br'),
 						el('select', {
 							value: max_score, 
 							onChange: updateMaxScore,
-							id: 'max_score',
+							id: instance_id+'max_score',
 							className: 'codeable-input-backend'
 						}, 
 							el('option',{ value: '5' },'5'),
@@ -346,12 +349,12 @@
 						)				
 					),
 					el('li',{},
-						el('label',{for: 'has_picture' },'Client Picture (filter): '),
+						el('label',{for: instance_id+'has_picture' },'Client Picture (filter): '),
 						el('br'),
 						el('select', {
 							value: has_picture, 
 							onChange: updateHasPicture,
-							id: 'show_title',
+							id: instance_id+'show_title',
 							className: 'codeable-input-backend',
 							title: 'Optionally only show clients who have set a profile picture (non-default)'
 						}, 
@@ -361,12 +364,12 @@
 						)				
 					),
 					el('li',{},
-						el('label',{for: 'show_title' },'Task Title: (display)'),
+						el('label',{for: instance_id+'show_title' },'Task Title: (display)'),
 						el('br'),
 						el('select', {
 							value: show_title, 
 							onChange: updateShowTitle,
-							id: 'show_title',
+							id: instance_id+'show_title',
 							className: 'codeable-input-backend'
 						}, 
 							el('option',{ value: 'no' },'Don\'t Show'),
@@ -375,12 +378,12 @@
 						)				
 					),
 					el('li',{},
-						el('label',{for: 'show_date' },'Task Date: (display)'),
+						el('label',{for: instance_id+'show_date' },'Task Date: (display)'),
 						el('br'),
 						el('select', {
 							value: show_date, 
 							onChange: updateShowDate,
-							id: 'show_date',
+							id: instance_id+'show_date',
 							className: 'codeable-input-backend'
 						}, 
 							el('option',{ value: 'no' },'Don\'t Show'),
@@ -389,12 +392,12 @@
 						)				
 					),
 					el('li',{},
-						el('label',{for: 'show_rating' },'Rating: (display)'),
+						el('label',{for: instance_id+'show_rating' },'Rating: (display)'),
 						el('br'),
 						el('select', {
 							value: show_rating, 
 							onChange: updateShowRating,
-							id: 'show_rating',
+							id: instance_id+'show_rating',
 							className: 'codeable-input-backend'
 						}, 
 							el('option',{ value: 'no' },'Don\'t Show'),
@@ -403,12 +406,12 @@
 						)				
 					),
 					el('li',{},
-						el('label',{for: 'sort' },'Sort: (display)'),
+						el('label',{for: instance_id+'sort' },'Sort: (display)'),
 						el('br'),
 						el('select', {
 							value: sort, 
 							onChange: updateSort,
-							id: 'sort',
+							id: instance_id+'sort',
 							className: 'codeable-input-backend'
 						}, 
 							el('option',{ value: '' },'Profile Order'),
@@ -417,48 +420,48 @@
 						),
 					),	
 					el('li',{},
-						el('label',{for: 'start_at' },'Start at #: (filter)'),
+						el('label',{for: instance_id+'start_at' },'Start at #: (filter)'),
 						el('br'),
 						el('input', { 
 							value: start_at, 
 							onChange: updateStartAt,
-							id: 'start_at',
+							id: instance_id+'start_at',
 							type: 'number',
 							className: 'codeable-input-backend',
 							title: 'Used as an offset. Useful for listing x reviews, adding your own content, then x more.'
 						})				
 					),
 					el('li',{},
-						el('label',{for: 'start_time' },'Start Time: (filter)'),
+						el('label',{for: instance_id+'start_time' },'Start Time: (filter)'),
 						el('br'),
 						el('input', { 
 							value: start_time, 
 							onChange: updateStartTime,
-							id: 'start_time',
+							id: instance_id+'start_time',
 							type: 'number',
 							className: 'codeable-input-backend',
 							title: 'Only show reviews after this time (format: Unix Timestamp). Blank to disable'
 						})				
 					),
 					el('li',{},
-						el('label',{for: 'end_time' },'End Time: (filter)'),
+						el('label',{for: instance_id+'end_time' },'End Time: (filter)'),
 						el('br'),
 						el('input', { 
 							value: end_time, 
 							onChange: updateEndTime,
-							id: 'end_time',
+							id: instance_id+'end_time',
 							type: 'number',
 							className: 'codeable-input-backend',
 							title: 'Only show reviews before this time (format: Unix Timestamp). Blank to disable.'
 						})				
 					),
 					el('li',{},
-						el('label',{for: 'schema' },'Build Schema: '),
+						el('label',{for: instance_id+'schema' },'Build Schema: '),
 						el('br'),
 						el('select', {
 							value: schema, 
 							onChange: updateSchema,
-							id: 'schema',
+							id: instance_id+'schema',
 							className: 'codeable-input-backend',
 							title: 'Experimental: Build Schema for your page for search engines'
 						}, 
@@ -469,63 +472,63 @@
 					),				
 					
 				), 
-				el('ul',{ className: 'codeable-editor-ul-longer', id: 'codeable-editor-ul-reviews-container-2', style: {'display':'none'}},
+				el('ul',{ className: 'codeable-editor-ul-longer', id: instance_id+'codeable-editor-ul-reviews-container-2', style: {'display':'none'}},
 					el('li',{},
-						el('label',{for: 'schema_desc', className: 'codeable-line-input-backend-label'},'Schema Desc: '),
+						el('label',{for: instance_id+'schema_desc', className: 'codeable-line-input-backend-label'},'Schema Desc: '),
 						el('br'),
 						el('input', {
 							type: 'text',
 							onChange: updateSchemaDesc,
 							value: schema_desc,
-							id: 'schema_desc',
+							id: instance_id+'schema_desc',
 							title: 'Schema Product Desc (Only takes effect if Schema is set to yes)',
 							className: 'codeable-line-input-backend'
 						})
 					),
 					el('li',{},
-						el('label',{for: 'filter_clients', className: 'codeable-line-input-backend-label'},'Filter Clients: '),
+						el('label',{for: instance_id+'filter_clients', className: 'codeable-line-input-backend-label'},'Filter Clients: '),
 						el('br'),
 						el('input', {
 							type: 'text',
 							onChange: updateFilterClients,
 							value: filter_clients,
-							id: 'filter_clients',
+							id: instance_id+'filter_clients',
 							title: 'Comma seperated list of client IDs to exclude from display',
 							className: 'codeable-line-input-backend'
 						})
 					),
 					el('li',{},
-						el('label',{for: 'filter_reviews', className: 'codeable-line-input-backend-label'},'Filter Reviews: '),
+						el('label',{for: instance_id+'filter_reviews', className: 'codeable-line-input-backend-label'},'Filter Reviews: '),
 						el('br'),
 						el('input', {
 							type: 'text',
 							onChange: updateFilterReviews,
 							value: filter_reviews,
-							id: 'filter_reviews',
+							id: instance_id+'filter_reviews',
 							title: 'Comma seperated list of review IDs to exclude from display',
 							className: 'codeable-line-input-backend'
 						})
 					),
 					el('li',{},
-						el('label',{for: 'only_clients', className: 'codeable-line-input-backend-label'},'Show Only Clients: '),
+						el('label',{for: instance_id+'only_clients', className: 'codeable-line-input-backend-label'},'Show Only Clients: '),
 						el('br'),
 						el('input', {
 							type: 'text',
 							onChange: updateOnlyClients,
 							value: only_clients,
-							id: 'only_clients',
+							id: instance_id+'only_clients',
 							title: 'Comma serpated list of client IDs to exclusively display (other filters still apply)',
 							className: 'codeable-line-input-backend'
 						})
 					),
 					el('li',{},
-						el('label',{for: 'only_reviews', className: 'codeable-line-input-backend-label'},'Show Only Reviews: '),
+						el('label',{for: instance_id+'only_reviews', className: 'codeable-line-input-backend-label'},'Show Only Reviews: '),
 						el('br'),
 						el('input', {
 							type: 'text',
 							onChange: updateOnlyReviews,
 							value: only_reviews,
-							id: 'only_reviews',
+							id: instance_id+'only_reviews',
 							title: 'Comma serpated list of review IDs to exclusively display (other filters still apply)',
 							className: 'codeable-line-input-backend'
 						})

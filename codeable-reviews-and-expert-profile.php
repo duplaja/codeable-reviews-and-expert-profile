@@ -168,7 +168,7 @@ function codeable_display_expert_image( $atts ){
 
 	}
 
-	$return_image.=">";
+	$return_image.=" alt='Codeable Expert Profile Picture'>";
 	
 	return $return_image;
 }
@@ -513,12 +513,12 @@ function codeable_display_reviews($atts){
 		if ($atts['show_rating'] != 'no') {
 
 			for ($i=0;$i<$score;$i++) {
-				$score_disp .= "<img src='".plugins_url( 'img/rating-star.png', __FILE__ )."' class='review_rating_star'>";
+				$score_disp .= "<img src='".plugins_url( 'img/rating-star.png', __FILE__ )."' alt='Rating Star' class='review_rating_star'>";
 			}
 		}
 
 		$to_return.= "<li class='codeable_review review_$review_id reviewer_$reviewer_id'>
-		<img src='".esc_url($image)."' class='reviewer_image'>
+		<img src='".esc_url($image)."' alt='User Image for Reviewer' class='reviewer_image'>
 		<div class='review_info'>";
 
 		if($atts['show_title'] == 'yes') {

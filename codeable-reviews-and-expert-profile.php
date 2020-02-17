@@ -4,7 +4,7 @@ Plugin Name: Codeable Reviews and Expert Profile
 Plugin URI: https://dandulaney.com
 GitHub Plugin URI: https://github.com/duplaja/codeable-reviews-and-expert-profile
 Description: Gathers Codeable Reviews and Profile Information for a Codeable Expert
-Version: 2.0.4
+Version: 2.1.0
 Author: Dan Dulaney
 Author URI: https://dandulaney.com
 License: GPLv2
@@ -140,6 +140,7 @@ function codeable_display_expert_image( $atts ){
 			'codeable_id' => '',			//Codeable expert ID #
 			'circle'=> 'yes',			//Whether the image should be circular when displayed
 			'class'=> 'codeable-profile-image',	//Optional extra class to add for easier styling
+			'loading'=> 'none',
 		), $atts, 'expert_image' );
 
 	if (empty($atts['codeable_id'])) {
@@ -166,6 +167,11 @@ function codeable_display_expert_image( $atts ){
 
 		$return_image .= " class='codeable-profile-image'";
 
+	}
+	
+	if($atts['loading'] == 'lazy') {
+	
+		$return_image .= " loading='lazy'";
 	}
 
 	$return_image.=" alt='Codeable Expert Profile Picture'>";
@@ -301,6 +307,7 @@ function codeable_display_reviews($atts){
 			'schema_desc' => 'Custom WordPress work through Codeable.io', //Product description for schema
 			'start_time' => '',	//Unix timestamp, shows reviews after this time
 			'end_time' => '', 	//Unix timestamp, shows reviews before this time
+			'loading' => 'none',
 		), $atts, 'expert_completed' );
 
 	if (empty($atts['codeable_id'])) {
@@ -513,12 +520,27 @@ function codeable_display_reviews($atts){
 		if ($atts['show_rating'] != 'no') {
 
 			for ($i=0;$i<$score;$i++) {
-				$score_disp .= "<img src='".plugins_url( 'img/rating-star.png', __FILE__ )."' alt='Rating Star' class='review_rating_star'>";
+				$score_disp .= "<img src='".plugins_url( 'img/rating-star.png', __FILE__ )."' alt='Rating Star' class='review_rating_star'";
+				
+				if($atts['loading'] == 'lazy') {
+	
+					$score_disp .= " loading='lazy'";
+	
+				}
+				$score_disp.= ">";
 			}
 		}
 
 		$to_return.= "<li class='codeable_review review_$review_id reviewer_$reviewer_id'>
-		<img src='".esc_url($image)."' alt='User Image for Reviewer' class='reviewer_image'>
+		<img src='".esc_url($image)."' alt='User Image for Reviewer' class='reviewer_image'";
+		
+		if($atts['loading'] == 'lazy') {
+	
+			$to_return .= " loading='lazy'";
+	
+		}
+		
+		echo ">
 		<div class='review_info'>";
 
 		if($atts['show_title'] == 'yes') {

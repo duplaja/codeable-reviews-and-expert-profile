@@ -4,7 +4,7 @@ Plugin Name: Codeable Reviews and Expert Profile
 Plugin URI: https://dandulaney.com
 GitHub Plugin URI: https://github.com/duplaja/codeable-reviews-and-expert-profile
 Description: Gathers Codeable Reviews and Profile Information for a Codeable Expert
-Version: 2.1.2
+Version: 2.1.3
 Author: Dan Dulaney
 Author URI: https://dandulaney.com
 License: GPLv2
@@ -529,11 +529,11 @@ function codeable_display_reviews($atts){
 			for ($i=0;$i<$score;$i++) {
 				$score_disp .= "<img src='".plugins_url( 'img/rating-star.png', __FILE__ )."' alt='Rating Star' class='review_rating_star'";
 				
-				if($atts['loading'] == 'lazy') {
+				/*if($atts['loading'] == 'lazy') {
 	
 					$score_disp .= " loading='lazy'";
 	
-				}
+				}*/
 				$score_disp.= ">";
 			}
 		}

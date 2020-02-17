@@ -47,14 +47,15 @@ I've added 3 Gutenberg Blocks (picture, button, and reviews list), with all opti
 * schema_desc="Your description here" (default is: Custom WordPress work through Codeable.io)
 * start_time (unix timestamp, will only show reviews published after this time)
 * end_time (unix timestamp, will only show reviews published before this time)
-* loading (set value to lazy to lazy load natively for Chrome)
-* cache (set value to "yes" to locally cache profile pictures, uses file_get_contents on first run)
+* loading (set value to lazy to lazy load natively for Chrome, default is none)
+* cache (set value to "yes" to locally cache profile pictures, uses file_get_contents on first run, default is "no")
 
 ### Optional atts: expert_image
 * circle=yes , default is yes shows image as a circle
 * class=your-class , add a custom extra class to the image tag for easier styling
-* loading (set value to lazy to lazy load natively for Chrome)
-* cache (set value to "yes" to locally cache profile pictures, uses file_get_contents on first run)
+* loading (set value to lazy to lazy load natively for Chrome, default is none)
+* name (set value to Codeable Expert's name for alt text, default is "Codeable Expert")
+* cache (set value to "yes" to locally cache profile pictures, uses file_get_contents on first run, default is "no")
 
 
 ### Optional atts: expert_hire

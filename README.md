@@ -8,9 +8,9 @@ Stores expert and review information from the API in transients to lower number 
 
 ## Sample Usage
 
-[expert_reviews codeable_id=31044 number_to_pull=50 min_score=5 show_x_more=5 min_review_length=1]
+[expert_reviews codeable_id=31044 number_to_pull=50 min_score=5 show_x_more=5 min_review_length=1 loading=lazy]
 
-(stores 50 latest reviews, then shows the 5 most recent that have a score of 5 and at least some message with the review)
+(stores 50 latest reviews, then shows the 5 most recent that have a score of 5 and at least some message with the review. Uses native Chrome lazyloading)
 
 ## Gutenblocks (New!)
 
@@ -47,10 +47,12 @@ I've added 3 Gutenberg Blocks (picture, button, and reviews list), with all opti
 * schema_desc="Your description here" (default is: Custom WordPress work through Codeable.io)
 * start_time (unix timestamp, will only show reviews published after this time)
 * end_time (unix timestamp, will only show reviews published before this time)
+* loading (set value to lazy to lazy load natively for Chrome)
 
 ### Optional atts: expert_image
 * circle=yes , default is yes shows image as a circle
 * class=your-class , add a custom extra class to the image tag for easier styling
+* loading (set value to lazy to lazy load natively for Chrome)
 
 ### Optional atts: expert_hire
 * message="Your Message", defaults to "Hire Me"
@@ -70,6 +72,11 @@ I've added 3 Gutenberg Blocks (picture, button, and reviews list), with all opti
 * Look at some sort of local caching of images to cut down on external calls to AWS
 
 == Changelog ==
+
+= 2.1.0 and 2.1.1 =
+* Feature: GitHub Updates after this version no longer require GitHub Updater plugin
+* Feature: Add lazy loading attribute to expert profile image and images in reviews. (set to lazy)
+* Bugfix: Fix PHP warning for undefined variable in block
 
 = 2.0.3 =
 * Bugfix: Fixed issues caused by non-unique IDs in editor (toggles, lables)

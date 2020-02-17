@@ -76,6 +76,12 @@ I've added 3 Gutenberg Blocks (picture, button, and reviews list), with all opti
 
 == Changelog ==
 
+== 2.2.1 and 2.2.2 =
+
+* Accessibility: Include Reviewer Name in Alt-Text for Profile Image 
+* Accessibility: Name Attribute for Expert Profile Image, used in Alt Text
+* Bugfix: Fix folder structure error from 2.2.0
+
 = 2.2.0 =
 * Feature: Optional Local Caching of Remote Images (cache flag on reviews and expert profile image)
 

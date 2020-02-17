@@ -4,7 +4,7 @@ Plugin Name: Codeable Reviews and Expert Profile
 Plugin URI: https://dandulaney.com
 GitHub Plugin URI: https://github.com/duplaja/codeable-reviews-and-expert-profile
 Description: Gathers Codeable Reviews and Profile Information for a Codeable Expert
-Version: 2.2.1
+Version: 2.2.2
 Author: Dan Dulaney
 Author URI: https://dandulaney.com
 License: GPLv2
@@ -148,8 +148,9 @@ function codeable_display_expert_image( $atts ){
 			'codeable_id' => '',			//Codeable expert ID #
 			'circle'=> 'yes',			//Whether the image should be circular when displayed
 			'class'=> 'codeable-profile-image',	//Optional extra class to add for easier styling
-			'loading'=> 'none',
-			'cache' => 'no',
+			'loading'=> 'none',			//Set to yes to add: loading='lazy'
+			'cache' => 'no', //Set to yes to save and serve locally
+			'name' => 'Codeable Expert', //Sets the Expert's Name for the Alt text in image
 		), $atts, 'expert_image' );
 
 	if (empty($atts['codeable_id'])) {
@@ -163,6 +164,8 @@ function codeable_display_expert_image( $atts ){
 	$image= $codeable_expert_data->avatar->large_url;
 
 	$profile_img_url = $image;
+
+	$name = $atts['name'];
 
 	if($atts['cache'] == 'yes') {
 
@@ -210,7 +213,7 @@ function codeable_display_expert_image( $atts ){
 		$return_image .= " loading='lazy'";
 	}
 
-	$return_image.=" alt='Codeable Expert Profile Picture'>";
+	$return_image.=" alt='${name}'s Codeable Profile Picture'>";
 	
 	return $return_image;
 }
@@ -596,7 +599,7 @@ function codeable_display_reviews($atts){
 		}
 
 		$to_return.= "<li class='codeable_review review_$review_id reviewer_$reviewer_id'>
-		<img src='".esc_url($profile_img_url)."' alt='User Image for Reviewer' class='reviewer_image'";
+		<img src='".esc_url($profile_img_url)."' alt='Reviewer Image for ".esc_html($name)."' class='reviewer_image'";
 		
 		if($atts['loading'] == 'lazy') {
 	

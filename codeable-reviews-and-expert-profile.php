@@ -213,7 +213,7 @@ function codeable_display_expert_image( $atts ){
 		$return_image .= " loading='lazy'";
 	}
 
-	$return_image.=" alt='${name}'s Codeable Profile Picture'>";
+	$return_image.=" alt='${name} Codeable Profile Picture'>";
 	
 	return $return_image;
 }

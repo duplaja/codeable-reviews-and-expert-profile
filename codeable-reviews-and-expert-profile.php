@@ -20,6 +20,7 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 	__FILE__,
 	'codeable-reviews-and-expert-profile'
 );
+$myUpdateChecker->setBranch('master');
 
 /*******************************************************************
 * Checks to see if Gutenberg is set up on the site before attempting to load blocks

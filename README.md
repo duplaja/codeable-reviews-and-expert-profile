@@ -48,11 +48,14 @@ I've added 3 Gutenberg Blocks (picture, button, and reviews list), with all opti
 * start_time (unix timestamp, will only show reviews published after this time)
 * end_time (unix timestamp, will only show reviews published before this time)
 * loading (set value to lazy to lazy load natively for Chrome)
+* cache (set value to "yes" to locally cache profile pictures, uses file_get_contents on first run)
 
 ### Optional atts: expert_image
 * circle=yes , default is yes shows image as a circle
 * class=your-class , add a custom extra class to the image tag for easier styling
 * loading (set value to lazy to lazy load natively for Chrome)
+* cache (set value to "yes" to locally cache profile pictures, uses file_get_contents on first run)
+
 
 ### Optional atts: expert_hire
 * message="Your Message", defaults to "Hire Me"
@@ -72,6 +75,9 @@ I've added 3 Gutenberg Blocks (picture, button, and reviews list), with all opti
 * Look at some sort of local caching of images to cut down on external calls to AWS
 
 == Changelog ==
+
+= 2.2.0 =
+* Feature: Optional Local Caching of Remote Images (cache flag on reviews and expert profile image)
 
 = 2.1.0 and 2.1.1 =
 * Feature: GitHub Updates after this version no longer require GitHub Updater plugin

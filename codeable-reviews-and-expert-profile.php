@@ -4,7 +4,7 @@ Plugin Name: Codeable Reviews and Expert Profile
 Plugin URI: https://dandulaney.com
 GitHub Plugin URI: https://github.com/duplaja/codeable-reviews-and-expert-profile
 Description: Gathers Codeable Reviews and Profile Information for a Codeable Expert
-Version: 2.1.3
+Version: 2.2.0
 Author: Dan Dulaney
 Author URI: https://dandulaney.com
 License: GPLv2
@@ -148,6 +148,7 @@ function codeable_display_expert_image( $atts ){
 			'circle'=> 'yes',			//Whether the image should be circular when displayed
 			'class'=> 'codeable-profile-image',	//Optional extra class to add for easier styling
 			'loading'=> 'none',
+			'cache' => 'no',
 		), $atts, 'expert_image' );
 
 	if (empty($atts['codeable_id'])) {
@@ -158,9 +159,36 @@ function codeable_display_expert_image( $atts ){
 	//Pulls expert data from API / Transient
 	$codeable_expert_data = codeable_handle_expert_transient($atts['codeable_id']);
 
-	$codeable_image_url= $codeable_expert_data->avatar->large_url;
+	$image= $codeable_expert_data->avatar->large_url;
+
+	$profile_img_url = $image;
+
+	if($atts['cache'] == 'yes') {
+
+		$base_profile_img_dir = dirname(__FILE__).'/img/profiles/';
+
+		$tempExpertImage = pathinfo($image); 
+
+		//Show the file name 
+		$filename = $tempExpertImage['basename']; 
+
+		if(file_exists($base_profile_img_dir.$filename)) {
+			$profile_img_url = plugins_url( "/img/profiles/"."$filename", __FILE__ );
+		} 
+		else {
+			if(file_put_contents( $base_profile_img_dir.$filename,file_get_contents($image))) {
+
+				$profile_img_url = plugins_url( "/img/profiles/"."$filename", __FILE__ );
+			
+			} 
+			else { 
+				$profile_img_url = $image; 
+			} 
+		}
+
+	}
 	
-	$return_image = "<img src='".esc_url($codeable_image_url)."'";
+	$return_image = "<img src='".esc_url($profile_image_url)."'";
 
 	if ($atts['circle'] == 'yes') {
 		$return_image .= " style='border-radius: 50%;'";
@@ -315,6 +343,7 @@ function codeable_display_reviews($atts){
 			'start_time' => '',	//Unix timestamp, shows reviews after this time
 			'end_time' => '', 	//Unix timestamp, shows reviews before this time
 			'loading' => 'none',
+			'cache' => 'no',
 		), $atts, 'expert_completed' );
 
 	if (empty($atts['codeable_id'])) {
@@ -538,8 +567,35 @@ function codeable_display_reviews($atts){
 			}
 		}
 
+		$profile_img_url = $image;
+
+		if($atts['cache'] == 'yes') {
+
+			$base_profile_img_dir = dirname(__FILE__).'/img/profiles/';
+
+			//Image Url: $image
+			$tempReviewerImage = pathinfo($image); 
+		
+			//Show the file name 
+			$filename = $tempReviewerImage['basename']; 
+		
+			if(file_exists($base_profile_img_dir.$filename)) {
+				$profile_img_url = plugins_url( "/img/profiles/"."$filename", __FILE__ );
+			} 
+			else {
+				if(file_put_contents( $base_profile_img_dir.$filename,file_get_contents($image))) {
+
+					$profile_img_url = plugins_url( "/img/profiles/"."$filename", __FILE__ );
+				
+				} 
+				else { 
+					$profile_img_url = $image; 
+				} 
+			}
+		}
+
 		$to_return.= "<li class='codeable_review review_$review_id reviewer_$reviewer_id'>
-		<img src='".esc_url($image)."' alt='User Image for Reviewer' class='reviewer_image'";
+		<img src='".esc_url($profile_img_url)."' alt='User Image for Reviewer' class='reviewer_image'";
 		
 		if($atts['loading'] == 'lazy') {
 	

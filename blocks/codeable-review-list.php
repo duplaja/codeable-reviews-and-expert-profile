@@ -33,7 +33,7 @@ function codeable_review_list_block_init() {
 		'codeable-review-list-block-editor',
 		plugins_url( $editor_css, __FILE__ ),
 		array(),
-		filemtime( "$dir/$style_css" )
+		filemtime( "$dir/$editor_css" )
 	);
 
 	$style_css = 'codeable-review-list/style.css';

@@ -543,7 +543,7 @@ function codeable_display_reviews($atts){
 		      "@type": "Review",
 		      "author": "'.$name.'",
 		      "datePublished": "'.date('Y-m-d',$time).'",
-		      "description": "'.$comment.'",
+		      "description": "'. htmlspecialchars( $comment ) .'",
 		      "name": "",
 		      "reviewRating": {
 		        "@type": "Rating",

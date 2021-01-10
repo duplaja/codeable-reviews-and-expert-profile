@@ -4,7 +4,7 @@ Plugin Name: Codeable Reviews and Expert Profile
 Plugin URI: https://dandulaney.com
 GitHub Plugin URI: https://github.com/duplaja/codeable-reviews-and-expert-profile
 Description: Gathers Codeable Reviews and Profile Information for a Codeable Expert
-Version: 2.2.2
+Version: 2.4.0
 Author: Dan Dulaney
 Author URI: https://dandulaney.com
 License: GPLv2
@@ -94,6 +94,12 @@ function codeable_handle_review_transient($codeable_id,$number_of_reviews) {
    
 		$number_of_pages = ceil($number_of_reviews / 4);
 		$response = wp_remote_get('https://api.codeable.io/users/'.$codeable_id.'/reviews/');
+		
+		//Returns false if error in connecting
+		if(wp_remote_retrieve_response_code($response)!= 200) {
+			return false;
+		}
+		
 		$codeable_review_data = json_decode(wp_remote_retrieve_body($response));
 
 		if ($number_of_reviews > 4) {
@@ -369,6 +375,10 @@ function codeable_display_reviews($atts){
 	//Retrieves (from api or transient) all stored reviews
 	$codeable_review_data = codeable_handle_review_transient($atts['codeable_id'],$to_pull);
 
+	if(!$codeable_review_data) {
+		return '';
+	}
+	
 	$schema = $atts['schema'];
 	if ($schema=='yes') {
 

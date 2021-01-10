@@ -13,6 +13,8 @@ License URI:
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+//Settings section
+require_once( plugin_dir_path( __FILE__ ) . 'includes/codeable-reviews-and-expert-profile-settings.php');
 //Automatic Updates from GitHub
 require 'plugin-update-checker/plugin-update-checker.php';
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
@@ -42,7 +44,6 @@ function codeable_css_enqueue() {
     wp_enqueue_style( 'codeable-reviews-and-experts-css', plugins_url( 'css/codeable-expert-styles.css', __FILE__ ) );
 }
 add_action( 'wp_enqueue_scripts', 'codeable_css_enqueue' );
-
 
 /****************************************
 * Function to pull / store / retrieve expert data

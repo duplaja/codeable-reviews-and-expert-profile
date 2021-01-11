@@ -14,7 +14,7 @@ License URI:
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 //Settings section
-require_once( plugin_dir_path( __FILE__ ) . 'includes/codeable-reviews-and-expert-profile-settings.php');
+require_once( plugin_dir_path( __FILE__ ) . 'includes/class-codeable-reviews-and-expert-profile-settings.php');
 //Automatic Updates from GitHub
 require 'plugin-update-checker/plugin-update-checker.php';
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(

@@ -25,7 +25,7 @@ add_action( 'admin_menu' , 'codeable_add_settings_page');
 **************************************************************************************/
 function codeable_register_settings(){
 	
-	register_setting( 'codeable_auth_options', 'codeable_auth_options');
+	register_setting( 'codeable_auth_options', 'codeable_auth_options' );
     
 	add_settings_section( 
 		'api_settings', 
@@ -70,7 +70,7 @@ function codeable_settings_text() {
 function codeable_settings_username(){
 	
     $options = get_codeable_options();
-	$username   =  sanitize_user($options['username']);
+	$username = sanitize_user($options['username']);
    
    echo '<input id="codeable_settings_username" name="codeable_auth_options[username]" type="email" value="'.$username.'" required />';
 }
@@ -78,7 +78,7 @@ function codeable_settings_username(){
 function codeable_settings_password(){
 	
     $options = get_codeable_options();
-	$token   =  sanitize_text_field($options['token']);
+	$token = sanitize_text_field($options['token']);
 	
     echo '<input id="codeable_settings_password" name="codeable_auth_options[token]" type="password" value="'.$token.'" required />';
 }
@@ -128,3 +128,14 @@ function codeable_settings_password_save( $value, $option, $old_value){
 	return $value;
 }
 add_filter( 'pre_update_option_codeable_auth_options' , 'codeable_settings_password_save', 10, 3); 
+
+/*************************************************************************************
+* Function to prevent the Settings API to saving the option as autoload yes
+**************************************************************************************/
+
+function codeable_autoload_no( $value, $new_value, $option){
+
+	update_option ('codeable_auth_options', $value, 'no');
+	return $value;
+}
+add_filter( 'update_option_codeable_auth_options' , 'codeable_autoload_no', 10, 3); 
